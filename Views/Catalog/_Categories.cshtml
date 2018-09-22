@@ -1,0 +1,8 @@
+﻿<h6>Select a Category</h6>
+<ul>
+    @foreach (var category in ViewBag.categories)
+    {
+        <li><a href="@Url.Action("Index", "Catalog", new { catid=category.CatId})">@category.CatTitle</a></li>
+    }
+    <li><a href="@Url.Action("Index", "Catalog", new { catid=0})">All</a></li>
+</ul>

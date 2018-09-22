@@ -1,0 +1,41 @@
+﻿@model ShoppingCartWithAdmin.Areas.Admin.Models.Category
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/AdminPanelLayout.cshtml";
+}
+@* check for session if null the login *@
+@if (Session["UserName"] == null)
+{
+    Response.Redirect("~/Admin/Admin/Login");
+}
+<link href="~/Areas/Admin/Content/Site.css" rel="stylesheet" />
+<h2>Category</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.CatId)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CatTitle, new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.CatTitle, new { @class="form-control"})
+                @Html.ValidationMessageFor(model => model.CatTitle)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

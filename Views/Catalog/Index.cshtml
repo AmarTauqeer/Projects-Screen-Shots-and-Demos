@@ -1,0 +1,54 @@
+﻿@model IEnumerable<ShoppingCartWithAdmin.Areas.Admin.Models.Product>
+
+@{
+    ViewBag.Title = "Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Html.Raw(TempData["msg"]) != null)
+{
+    Html.Raw(TempData["msg"]);
+}
+
+
+
+<h2>Products</h2>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2">
+            <!--Sidebar content-->
+            @{Html.RenderAction("CategoryPartialView", "Catalog");}
+        </div>
+        <div class="span10">
+            <!--Body content-->
+            @{
+                //repeatdirection = Horizontal, RepeatColumns = 4
+                const int NumberOfColumns = 4;
+                int skip = 0;
+                var items = Model.Skip(skip).Take(NumberOfColumns);
+                while (items.Count() > 0)
+                {
+                    <div class="row-fluid">
+                        
+                        @foreach (var item in items)
+                        {
+                            <div class="col-md-3">
+                                <img src="~/Image/@Html.ValueFor(model => item.ImageURL)" width="120" height="120" /><br />
+                                @Html.DisplayFor(modelItem => item.ProductName)<br />
+                                @Html.DisplayFor(modelItem => item.Description)<br />
+                                @Html.DisplayFor(modelItem => item.Price)<br />
+                                @Html.ActionLink("Add to Cart", "/Cart/Create", "Admin", new { prodid = item.ProductId, price = item.Price }, new { area = string.Empty })
+
+                            </div>
+                        }
+                    </div>
+                        skip += NumberOfColumns;
+                        items = Model.Skip(skip).Take(NumberOfColumns);
+                }
+            }
+
+        </div>
+    </div>
+</div>
+
+

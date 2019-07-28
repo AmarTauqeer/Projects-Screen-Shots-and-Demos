@@ -1,0 +1,198 @@
+******************************Database Scripts******************************
+
+USE [Demo_admin_guest_application]
+GO
+
+/****** Object:  Table [dbo].[Customer]    Script Date: 7/28/2019 1:44:09 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Customer](
+	[CustomerID] [int] IDENTITY(1,1) NOT NULL,
+	[CustomerName] [varchar](150) NOT NULL,
+	[Address] [varchar](150) NULL,
+	[PhoneNumber] [nvarchar](50) NULL,
+	[Email] [nvarchar](50) NULL,
+	[City] [varchar](50) NULL,
+	[CreateDate] [date] NOT NULL,
+	[ImagePath] [varchar](150) NULL,
+ CONSTRAINT [PK_Customer] PRIMARY KEY CLUSTERED 
+(
+	[CustomerID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+USE [Demo_admin_guest_application]
+GO
+
+/****** Object:  Table [dbo].[tbl_Categories]    Script Date: 7/28/2019 1:45:16 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tbl_Categories](
+	[CatId] [int] IDENTITY(1,1) NOT NULL,
+	[CategoryName] [nvarchar](max) NULL,
+	[Description] [nvarchar](max) NULL,
+ CONSTRAINT [PK_tbl_Categories] PRIMARY KEY CLUSTERED 
+(
+	[CatId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+USE [Demo_admin_guest_application]
+GO
+
+/****** Object:  Table [dbo].[tbl_Products]    Script Date: 7/28/2019 1:45:32 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tbl_Products](
+	[ProductId] [int] IDENTITY(1,1) NOT NULL,
+	[ProductName] [nvarchar](max) NULL,
+	[ProductDescription] [nvarchar](max) NULL,
+	[Unit] [nchar](10) NULL,
+	[SaleRate] [decimal](12, 3) NULL,
+	[PurchaseRate] [decimal](12, 3) NULL,
+	[CatId] [int] NULL,
+	[ImagePath] [varchar](max) NOT NULL,
+ CONSTRAINT [PK_tbl_Products] PRIMARY KEY CLUSTERED 
+(
+	[ProductId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[tbl_Products]  WITH CHECK ADD  CONSTRAINT [FK_tbl_Products_tbl_Categories] FOREIGN KEY([CatId])
+REFERENCES [dbo].[tbl_Categories] ([CatId])
+GO
+
+ALTER TABLE [dbo].[tbl_Products] CHECK CONSTRAINT [FK_tbl_Products_tbl_Categories]
+GO
+
+
+USE [Demo_admin_guest_application]
+GO
+
+/****** Object:  Table [dbo].[tbl_Users]    Script Date: 7/28/2019 1:45:51 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tbl_Users](
+	[UserId] [int] IDENTITY(1,1) NOT NULL,
+	[UserName] [nvarchar](max) NULL,
+	[Email] [nvarchar](max) NULL,
+	[Password] [nvarchar](max) NULL,
+ CONSTRAINT [PK_tbl_Users] PRIMARY KEY CLUSTERED 
+(
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+USE [Demo_admin_guest_application]
+GO
+
+/****** Object:  Table [dbo].[tbl_Cart]    Script Date: 7/28/2019 1:46:09 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tbl_Cart](
+	[CartId] [int] IDENTITY(1,1) NOT NULL,
+	[ProductId] [int] NOT NULL,
+	[Qty] [int] NOT NULL,
+	[Price] [int] NULL,
+	[CreatedDateTime] [datetime] NOT NULL,
+	[SessionKey] [nvarchar](max) NULL,
+ CONSTRAINT [PK_tbl_Cart] PRIMARY KEY CLUSTERED 
+(
+	[CartId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[tbl_Cart]  WITH CHECK ADD  CONSTRAINT [FK_tbl_Cart_tbl_Products] FOREIGN KEY([ProductId])
+REFERENCES [dbo].[tbl_Products] ([ProductId])
+GO
+
+ALTER TABLE [dbo].[tbl_Cart] CHECK CONSTRAINT [FK_tbl_Cart_tbl_Products]
+GO
+
+
+USE [Demo_admin_guest_application]
+GO
+
+/****** Object:  Table [dbo].[OrderDetail]    Script Date: 7/28/2019 1:46:25 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[OrderDetail](
+	[OrderId] [int] NOT NULL,
+	[ProductId] [int] NOT NULL,
+	[Quantity] [int] NOT NULL,
+	[Rate] [int] NOT NULL,
+ CONSTRAINT [PK_OrderDetail] PRIMARY KEY CLUSTERED 
+(
+	[OrderId] ASC,
+	[ProductId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[OrderDetail]  WITH CHECK ADD  CONSTRAINT [FK_OrderDetail_OrderDetail] FOREIGN KEY([OrderId])
+REFERENCES [dbo].[OrderMaster] ([OrderId])
+GO
+
+ALTER TABLE [dbo].[OrderDetail] CHECK CONSTRAINT [FK_OrderDetail_OrderDetail]
+GO
+
+
+USE [Demo_admin_guest_application]
+GO
+
+/****** Object:  Table [dbo].[OrderMaster]    Script Date: 7/28/2019 1:46:40 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[OrderMaster](
+	[OrderId] [int] NOT NULL,
+	[CustomerId] [int] NOT NULL,
+	[OrderDate] [date] NOT NULL,
+	[OrderStatus] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_OrderMaster_1] PRIMARY KEY CLUSTERED 
+(
+	[OrderId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[OrderMaster]  WITH CHECK ADD  CONSTRAINT [FK_OrderMaster_Customer] FOREIGN KEY([CustomerId])
+REFERENCES [dbo].[Customer] ([CustomerID])
+GO
+
+ALTER TABLE [dbo].[OrderMaster] CHECK CONSTRAINT [FK_OrderMaster_Customer]
+GO

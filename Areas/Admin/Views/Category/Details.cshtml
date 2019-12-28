@@ -1,0 +1,29 @@
+﻿@model ShoppingCartWithAdmin.Areas.Admin.Models.Category
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/AdminPanelLayout.cshtml";
+}
+@* check for session if null the login *@
+@if (Session["UserName"] == null)
+{
+    Response.Redirect("~/Admin/Admin/Login");
+}
+<h2>Category</h2>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            Category Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CatTitle)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CatId }) |
+    @Html.ActionLink("Back to Category", "Index")
+</p>

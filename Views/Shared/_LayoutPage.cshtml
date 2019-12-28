@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="~/Content/assets/css/main.css" />
+</head>
+
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="inner">
+            @Html.ActionLink("Hi-Tech Petroleum", "Index", "Home", new { @class="logo"})
+            <nav id="nav">
+                @Html.ActionLink("Home", "Index", "Home")
+                @Html.ActionLink("Shop", "Index", "Catalog")
+                @Html.ActionLink("Sale", "Index", "Sale")
+                @Html.ActionLink("Contact", "Index", "Home")
+                
+                <a href="elements.html">Elements</a>
+            </nav>
+           
+        </div>
+    </header>
+    <a href="#menu" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+    <div>
+        <section id="one">
+            <div class="inner">
+                @RenderBody()
+            </div>
+        </section>
+        
+    </div>
+    <!-- Scripts -->
+    <script src="~/Content/assets/js/jquery.min.js"></script>
+    <script src="~/Content/assets/js/skel.min.js"></script>
+    <script src="~/Content/assets/js/util.js"></script>
+    <script src="~/Content/assets/js/main.js"></script>
+</body>
+</html>

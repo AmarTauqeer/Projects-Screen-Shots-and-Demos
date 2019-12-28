@@ -1,0 +1,80 @@
+﻿@model ShoppingCartWithAdmin.Areas.Admin.Models.Product
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/AdminPanelLayout.cshtml";
+}
+@* check for session if null the login *@
+@if (Session["UserName"] == null)
+{
+    Response.Redirect("~/Admin/Admin/Login");
+}
+<link href="~/Areas/Admin/Content/Site.css" rel="stylesheet" />
+<h2>Product</h2>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.ProductId)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProductName, new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.ProductName, new { @class="form-control"})
+                @Html.ValidationMessageFor(model => model.ProductName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price, new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.Price, new { @class="form-control"})
+                @Html.ValidationMessageFor(model => model.Price)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.TextAreaFor(model => model.Description, new { @class="form-control"})
+                @Html.ValidationMessageFor(model => model.Description)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Category", "Category Name", new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.DropDownList("CatId", null, "Select", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CatId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Image", "Image", new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.File, new { @type = "file" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Image1", " ", new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                <img src="~/Image/@Model.ImageURL" width="200" height="200" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to Products", "Index")
+</div>

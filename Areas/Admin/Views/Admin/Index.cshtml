@@ -1,0 +1,11 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/AdminPanelLayout.cshtml";
+}
+@if (Session["UserName"] == null)
+{
+    Response.Redirect("~/Admin/Admin/Login");
+}
+<h2>Admin Home Page</h2>
+
